@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<robot name="rbo" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- variables -->
+    <xacro:property name="PI" value="3.1415926"/>
+    <xacro:property name="base_length" value="2.0"/>
+    <xacro:property name="base_width"  value="1.0"/>
+    <xacro:property name="base_height" value="0.4"/>
+    <xacro:property name="wheel_length" value="1.00"/>
+    <xacro:property name="wheel_radius" value="0.15"/>
+
+    <material name="red">
+        <color rgba="1 0 0 1"/>
+    </material>
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <!-- geometry -->
+    <xacro:macro name="cylinder_geometry" params="l r">
+        <geometry>
+            <cylinder length="${l}" radius="${r}"/>
+        </geometry>
+    </xacro:macro>
+
+    <xacro:macro name="origin_macro" params="xyz rpy">
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+    </xacro:macro>
+
+    <xacro:macro name="box_geometry" params="l w h">
+        <geometry>
+            <box size="${w} ${l} ${h}"/>
+        </geometry>
+    </xacro:macro>
+
+    <!-- link -->
+    <!-- world link -->
+    <link name="base_link"/>
+
+    <!-- joint -->
+    <xacro:macro name="world_wheel_joint" params="wheel_name x y">
+        <link name="${wheel_name}">
+            <visual>
+                <xacro:cylinder_geometry l="${wheel_length}" r="${wheel_radius}"/>
+                <xacro:origin_macro xyz="0 0 0" rpy="0 0 0"/>
+                <material name="red"/>
+            </visual>
+        </link>
+
+        <joint name="world_${wheel_name}" type="fixed">
+            <origin xyz="${x} ${y} 0.0" rpy="0 0 0"/>
+            <parent link="base_link"/>
+            <child link="${wheel_name}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:world_wheel_joint wheel_name="pilar1" x="1" y="4"/>
+    <xacro:world_wheel_joint wheel_name="pilar2" x="14" y="2"/>
+    <xacro:world_wheel_joint wheel_name="pilar3" x="1" y="15"/>
+    <xacro:world_wheel_joint wheel_name="pilar4" x="14" y="14"/>
+    <xacro:world_wheel_joint wheel_name="pilar5" x="1" y="30"/>
+    <xacro:world_wheel_joint wheel_name="pilar6" x="14" y="30"/>
+    <xacro:world_wheel_joint wheel_name="pilar7" x="1" y="40"/>
+    <xacro:world_wheel_joint wheel_name="pilar8" x="14" y="40"/>
+    <xacro:world_wheel_joint wheel_name="pilar9" x="1" y="55"/>
+    <xacro:world_wheel_joint wheel_name="pilar10" x="14" y="55"/>
+    <xacro:world_wheel_joint wheel_name="pilar11" x="26" y="40"/>
+    <xacro:world_wheel_joint wheel_name="pilar12" x="26" y="55"/>
+    <xacro:world_wheel_joint wheel_name="pilar13" x="37" y="40"/>
+    <xacro:world_wheel_joint wheel_name="pilar14" x="37" y="53"/>
+    <xacro:world_wheel_joint wheel_name="pilar15" x="51" y="40"/>
+    <xacro:world_wheel_joint wheel_name="pilar16" x="51" y="54"/>
+    <xacro:world_wheel_joint wheel_name="pilar17" x="64" y="38"/>
+    <xacro:world_wheel_joint wheel_name="pilar18" x="64" y="55"/>
+    <xacro:world_wheel_joint wheel_name="pilar19" x="75" y="54"/>
+    <xacro:world_wheel_joint wheel_name="pilar20" x="92" y="55"/>
+    <xacro:world_wheel_joint wheel_name="pilar21" x="75" y="35"/>
+    <xacro:world_wheel_joint wheel_name="pilar22" x="92" y="40"/>
+    <xacro:world_wheel_joint wheel_name="pilar23" x="75" y="25"/>
+    <xacro:world_wheel_joint wheel_name="pilar24" x="95" y="25"/>
+    <xacro:world_wheel_joint wheel_name="pilar25" x="75" y="15"/>
+    <xacro:world_wheel_joint wheel_name="pilar26" x="92" y="15"/>
+    <xacro:world_wheel_joint wheel_name="pilar27" x="74" y="3"/>
+    <xacro:world_wheel_joint wheel_name="pilar28" x="95" y="4"/>
+
+
+
+    <link name="car_link">
+        <visual>
+            <xacro:box_geometry l="${base_length}" w="${base_width}" h="${base_height}"/>
+            <xacro:origin_macro xyz="0 0 0" rpy="0 0 0"/>
+            <material name="black"/>
+        </visual>
+    </link>
+
+    <joint name="base_car" type="floating">
+        <parent link="base_link"/>
+        <child link="car_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <!--<calibration rising="0.0"/>-->
+        <!--<dynamics damping="0.0" friction="0.0"/>-->
+        <!--<limit effort="30" velocity="1.0" lower="-2.2" upper="0.7" />-->
+        <!--<safety_controller k_velocity="10" k_position="150" soft_lower_limit="-2.0" soft_upper_limit="0.5" />-->
+    </joint>
+</robot>

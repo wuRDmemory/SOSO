@@ -1,0 +1,19 @@
+<launch>
+    <arg name="rviz_file" default="$(find robotic_optimizer)/config/test.rviz"/>
+    <arg name="model" default="$(find robotic_optimizer)/urdf/world_urdf.urdf.xacro"/>
+
+    <node pkg="robotic_optimizer" type="test_node" name="robotic_optimizer_node" output="screen"/>
+    <node pkg="turtlesim" type="turtle_teleop_key" name="key_board" launch-prefix="xterm -e" />
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_file)"/>
+
+    <param name="robot_description" command="$(find xacro)/xacro.py --inorder $(arg model)"/>
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="rate" type="int" value="50"/>
+        <!-- <remap from="joint_states" to="use_namespace/joint_states" /> -->
+    </node>
+    <node name="robot_state_publisher_" pkg="robot_state_publisher" type="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="50.0"/>
+        <!-- <remap from="joint_states" to="use_namespace/joint_states" /> -->
+    </node>
+</launch>
